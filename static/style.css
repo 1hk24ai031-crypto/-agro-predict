@@ -1,0 +1,112 @@
+body {
+    font-family: Arial, sans-serif;
+    background: #f0f7f0;
+    display: flex;
+    justify-content: center;
+    padding: 40px;
+}
+
+.container {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    width: 400px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+h1 { color: #2e7d32; text-align: center; }
+p  { text-align: center; color: #555; }
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    background: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover { background: #1b5e20; }
+
+.result {
+    margin-top: 24px;
+    padding: 20px;
+    background: #e8f5e9;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.result h2 { color: #2e7d32; }
+.weather-card {
+    margin-top: 20px;
+    background: linear-gradient(135deg, #e3f2fd, #e8f5e9);
+    border-radius: 16px;
+    padding: 20px 24px;
+    border: 1px solid #bbdefb;
+}
+
+.weather-card h3 {
+    color: #1565c0;
+    margin-bottom: 16px;
+    font-size: 1rem;
+}
+
+.weather-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.weather-item {
+    background: white;
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    text-align: center;
+}
+
+.weather-icon {
+    font-size: 1.8rem;
+}
+
+.weather-label {
+    font-size: 0.78rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.weather-value {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #2e7d32;
+}
+
+.weather-badge {
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+.weather-badge.normal { background: #e8f5e9; color: #2e7d32; }
+.weather-badge.hot    { background: #ffebee; color: #c62828; }
+.weather-badge.cold   { background: #fff8e1; color: #e65100; }
