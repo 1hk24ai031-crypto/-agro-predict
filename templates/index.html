@@ -44,12 +44,22 @@
         .chart-box h3 { color: #444; margin-bottom: 16px; font-size: 1rem; }
         .map-box { margin-top: 24px; border-radius: 16px; overflow: hidden; border: 1px solid #e0e0e0; padding: 16px; background: white; }
         .map-box h3 { color: #444; margin-bottom: 12px; }
+        .lang-bar { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0; }
+.lang-btn { padding:8px 14px; border-radius:20px; border:2px solid #c8e6c9; background:#f1f8e9; color:#2e7d32; font-weight:600; cursor:pointer; font-size:13px; }
+.lang-btn.active { background:#2e7d32; color:white; border-color:#2e7d32; }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>🌾 AgroPredict <span>Climate-Smart Crop Recommendation</span></h1>
+   <h1 id="title">🌾 AgroPredict <span id="sub">Climate-Smart Crop Recommendation</span></h1>
 
+<div class="lang-bar">
+  <button onclick="setLang('en')" class="lang-btn active" id="btn-en">English</button>
+  <button onclick="setLang('te')" class="lang-btn" id="btn-te">తెలుగు</button>
+  <button onclick="setLang('hi')" class="lang-btn" id="btn-hi">हिंदी</button>
+  <button onclick="setLang('kn')" class="lang-btn" id="btn-kn">ಕನ್ನಡ</button>
+  <button onclick="setLang('ta')" class="lang-btn" id="btn-ta">தமிழ்</button>
+</div>
     <div class="location-bar" id="locationBar">
         <div class="dot"></div>
         <span id="locationText">📍 Detecting your location...</span>
@@ -246,6 +256,26 @@
             setStatus("error", "❌ Location denied. Fill manually.");
         }, { timeout: 10000 });
     };
+    const LANGS = {
+  en: { title:"🌾 AgroPredict", sub:"Climate-Smart Crop Recommendation", soil:"🌍 SELECT SOIL TYPE — Auto-fills N, P, K", predict:"🔍 Get Crop Recommendation", n:"🌿 Nitrogen (N)", p:"🌿 Phosphorus (P)", k:"🌿 Potassium (K)", temp:"🌡️ Temperature (°C)", hum:"💧 Humidity (%)", ph:"⚗️ Soil pH (0–14)", rain:"🌧️ Rainfall (mm)" },
+  te: { title:"🌾 అగ్రోప్రెడిక్ట్", sub:"వాతావరణ-స్మార్ట్ పంట సిఫార్సు", soil:"🌍 మట్టి రకం ఎంచుకోండి", predict:"🔍 పంట సిఫార్సు పొందండి", n:"🌿 నత్రజని (N)", p:"🌿 భాస్వరం (P)", k:"🌿 పొటాషియం (K)", temp:"🌡️ ఉష్ణోగ్రత (°C)", hum:"💧 తేమ (%)", ph:"⚗️ మట్టి pH", rain:"🌧️ వర్షపాతం (mm)" },
+  hi: { title:"🌾 एग्रोप्रेडिक्ट", sub:"जलवायु-स्मार्ट फसल अनुशंसा", soil:"🌍 मिट्टी का प्रकार चुनें", predict:"🔍 फसल की सिफारिश पाएं", n:"🌿 नाइट्रोजन (N)", p:"🌿 फास्फोरस (P)", k:"🌿 पोटेशियम (K)", temp:"🌡️ तापमान (°C)", hum:"💧 आर्द्रता (%)", ph:"⚗️ मिट्टी pH", rain:"🌧️ वर्षा (mm)" },
+  kn: { title:"🌾 ಅಗ್ರೋಪ್ರೆಡಿಕ್ಟ್", sub:"ಹವಾಮಾನ-ಸ್ಮಾರ್ಟ್ ಬೆಳೆ ಶಿಫಾರಸು", soil:"🌍 ಮಣ್ಣಿನ ಪ್ರಕಾರ ಆಯ್ಕೆ ಮಾಡಿ", predict:"🔍 ಬೆಳೆ ಶಿಫಾರಸು ಪಡೆಯಿರಿ", n:"🌿 ಸಾರಜನಕ (N)", p:"🌿 ರಂಜಕ (P)", k:"🌿 ಪೊಟ್ಯಾಸಿಯಮ್ (K)", temp:"🌡️ ತಾಪಮಾನ (°C)", hum:"💧 ಆರ್ದ್ರತೆ (%)", ph:"⚗️ ಮಣ್ಣಿನ pH", rain:"🌧️ ಮಳೆ (mm)" },
+  ta: { title:"🌾 அக்ரோபிரெடிக்ட்", sub:"காலநிலை-ஸ்மார்ட் பயிர் பரிந்துரை", soil:"🌍 மண் வகை தேர்ந்தெடுக்கவும்", predict:"🔍 பயிர் பரிந்துரை பெறுக", n:"🌿 நைட்ரஜன் (N)", p:"🌿 பாஸ்பரஸ் (P)", k:"🌿 பொட்டாசியம் (K)", temp:"🌡️ வெப்பநிலை (°C)", hum:"💧 ஈரப்பதம் (%)", ph:"⚗️ மண் pH", rain:"🌧️ மழை (mm)" },
+};
+
+function setLang(code) {
+  const l = LANGS[code];
+  document.getElementById("title").childNodes[0].textContent = l.title + " ";
+  document.getElementById("sub").textContent = l.sub;
+  document.querySelector(".soil-selector label").textContent = l.soil;
+  document.querySelector("button[type='submit']").textContent = l.predict;
+  const labels = document.querySelectorAll(".form-group label");
+  const keys = ["n","p","k","temp","hum","ph","rain"];
+  labels.forEach((el,i) => { if(keys[i]) el.textContent = l[keys[i]]; });
+  document.querySelectorAll(".lang-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("btn-"+code).classList.add("active");
+}
 </script>
 </body>
 </html>
