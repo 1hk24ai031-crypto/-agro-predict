@@ -209,6 +209,37 @@
         document.querySelectorAll(".soil-btn").forEach(b => b.classList.remove("active"));
         event.target.classList.add("active");
     }
+    // Browser Notifications
+function setupBrowserNotifications() {
+    if (!("Notification" in window)) return;
+    Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
+            // Show confirmation
+            new Notification("🌾 AgroPredict", {
+                body: "✅ Daily weather alerts enabled! You'll be notified about farm risks.",
+                icon: "https://cdn-icons-png.flaticon.com/512/628/628324.png"
+            });
+        }
+    });
+}
+
+function sendFarmAlert(crop, temp, rain) {
+    if (Notification.permission !== "granted") return;
+    if (temp > 35) {
+        new Notification("⚠️ Farm Risk Alert!", {
+            body: `High temp ${temp}°C! Use drip irrigation for ${crop}.`,
+            icon: "https://cdn-icons-png.flaticon.com/512/628/628324.png"
+        });
+    } else if (rain < 30) {
+        new Notification("⚠️ Drought Risk!", {
+            body: `Low rainfall ${rain}mm. Water your ${crop} crops now!`,
+            icon: "https://cdn-icons-png.flaticon.com/512/628/628324.png"
+        });
+    }
+}
+
+// Ask permission on load
+setupBrowserNotifications();
 
     window.onload = function () {
         const bar  = document.getElementById("locationBar");
@@ -240,7 +271,7 @@
                     setField("humidity",    d.current.relative_humidity_2m);
                     setField("rainfall",    d.current.precipitation);
                     setStatus("success", `✅ ${city}, ${state} — 🌡️ ${d.current.temperature_2m}°C | 💧 ${d.current.relative_humidity_2m}% | 🌧️ ${d.current.precipitation}mm`);
-
+                    setTimeout(() => sendFarmAlert("your crops", d.current.temperature_2m, d.current.precipitation), 2000);
                     // Map
                     const mapEl = document.getElementById("map");
                     if (mapEl) {
